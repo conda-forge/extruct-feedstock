@@ -1,5 +1,5 @@
 {% set name = "extruct" %}
-{% set version = "0.16.0" %}
+{% set version = "0.17.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/extruct-{{ version }}.tar.gz
-  sha256: d09cb3d86d149a276b277b3bd45b2b867ef3ec78bed9cd58ee0f2ae01ae670c4
+  sha256: a94c0be5b5fd95a8370204ecc02687bd27845d536055d8d1c69a0a30da0420c7
 
 build:
   noarch: python
