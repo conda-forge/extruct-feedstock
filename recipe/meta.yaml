@@ -1,53 +1,62 @@
-{% set name = "extruct" %}
 {% set version = "0.17.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: extruct
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/extruct-{{ version }}.tar.gz
-  sha256: a94c0be5b5fd95a8370204ecc02687bd27845d536055d8d1c69a0a30da0420c7
+  - folder: dist
+    url: https://pypi.io/packages/source/e/extruct/extruct-{{ version }}.tar.gz
+    sha256: a94c0be5b5fd95a8370204ecc02687bd27845d536055d8d1c69a0a30da0420c7
+  - folder: src
+    url: https://github.com/scrapinghub/extruct/archive/refs/tags/v{{ version }}.tar.gz
+    sha256: 8c2841540a6f72d05ad9683513effb127eef49bcbe653a3269542e606588728b
 
 build:
+  number: 1
   noarch: python
+  script:
+    - cd dist && {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - extruct = extruct.tool:main
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 0
 
 requirements:
   host:
-    - python >=3.8
     - pip
-  run:
     - python >=3.8
-    # Due to error "cannot import name '_ElementStringResult' from 'lxml.etree' need to put upper bound to lxml
-    - lxml <=5.1.0
-    - rdflib >=6.0.0
-    - pyrdfa3
-    - mf2py
-    - w3lib
+  run:
     - html-text >=0.5.1
     - jstyleson
-
+    - lxml
+    - lxml-html-clean
+    - mf2py >=1.0.0
+    - pyrdfa3
+    - python >=3.8
+    - rdflib >=6.0.0
+    - w3lib
     # Include requests even though it's optional for CLI
     - requests
 
 test:
+  source_files:
+    - src/tests
+  requires:
+    - coverage
+    - pip
+    - pytest
   imports:
     - extruct
   commands:
     - pip check
     - extruct --help
-  requires:
-    - pip
+    - cd src && coverage run --source extruct --branch -m pytest -vv --tb=long --color=yes
+    - coverage report --show-missing --skip-covered --fail-under=89
 
 about:
   home: https://github.com/scrapinghub/extruct
   summary: Extract embedded metadata from HTML markup
   license: BSD-3-Clause
-  license_file: LICENSE
+  license_file: dist/LICENSE
 
 extra:
   recipe-maintainers:
