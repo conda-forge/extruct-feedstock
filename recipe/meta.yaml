@@ -1,4 +1,4 @@
-{% set version = "0.17.0" %}
+{% set version = "0.18.0" %}
 
 package:
   name: extruct
@@ -7,13 +7,13 @@ package:
 source:
   - folder: dist
     url: https://pypi.io/packages/source/e/extruct/extruct-{{ version }}.tar.gz
-    sha256: a94c0be5b5fd95a8370204ecc02687bd27845d536055d8d1c69a0a30da0420c7
+    sha256: b5b48d459003b27c05ee91527b14a5a31735231aaf85d2b1f331d4db879318dd
   - folder: src
     url: https://github.com/scrapinghub/extruct/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: 8c2841540a6f72d05ad9683513effb127eef49bcbe653a3269542e606588728b
+    sha256: 0a9b8703159e89fa0d7b87d7c40c12ba609f61c31a42aa87e9027e774a78a3cb
 
 build:
-  number: 1
+  number: 0
   noarch: python
   script:
     - cd dist && {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
